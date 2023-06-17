@@ -4,4 +4,6 @@ plugins {
 }
 
 rootProject.name = "ragdrop"
-include("lib")
+
+include(":ragdrop")
+project(":ragdrop").projectDir = file("$rootDir/lib")

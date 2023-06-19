@@ -1,0 +1,18 @@
+{
+
+  "commands": {
+    "aliases": ["cmd", "comandos"],
+    "type": "array number[0..10]",
+    "required": true,
+    "description": "Lista de los comandos junto a su nivel de autorización requerido. Más información en https://docs.lacabra.app/configuracion/modulos/comandos"
+  },
+
+  "prefix": {
+    "aliases": ["prefijo"],
+    "type": "string[1..10]",
+    "required": false,
+    "default": "!"
+  }
+
+
+}

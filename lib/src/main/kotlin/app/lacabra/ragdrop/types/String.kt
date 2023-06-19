@@ -5,6 +5,8 @@ import app.lacabra.ragdrop.Constants.requirementsRegex
 import app.lacabra.ragdrop.Type
 import app.lacabra.ragdrop.TypeFactory
 import kotlin.Boolean
+import kotlin.collections.Map
+import kotlin.reflect.KFunction1
 
 class String(
     private val value: kotlin.String
@@ -53,11 +55,14 @@ class String(
         return true
     }
 
+    override fun withTypes(types: Map<kotlin.String, KFunction1<kotlin.String, Type>>) = Unit
+
+
     companion object : TypeFactory {
 
         override val name = "string"
 
-        class BadStringException(
+        private class BadStringException(
             message: kotlin.String
         ): BadSchemaException(message)
 

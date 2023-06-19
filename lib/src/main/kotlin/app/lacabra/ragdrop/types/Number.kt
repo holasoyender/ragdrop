@@ -5,6 +5,8 @@ import app.lacabra.ragdrop.Type
 import app.lacabra.ragdrop.TypeFactory
 import kotlin.Boolean
 import kotlin.String
+import kotlin.collections.Map
+import kotlin.reflect.KFunction1
 
 class Number(
     private val value: String
@@ -48,10 +50,13 @@ class Number(
         return true
     }
 
+    override fun withTypes(types: Map<String, KFunction1<String, Type>>) = Unit
+
+
     companion object: TypeFactory {
         override val name = "number"
 
-        class BadIntException(
+        private class BadIntException(
             message: String
         ): Exception(message)
 

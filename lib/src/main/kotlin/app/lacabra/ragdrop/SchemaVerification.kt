@@ -34,9 +34,9 @@ class SchemaVerification {
 
                 val defaultValue = if (!required) {
                     try {
-                        rootObject.getString("default")
+                        rootObject.get("default")
                     } catch (e: Exception) {
-                        throw BadSchemaException("Root '$root' is required but has no default value")
+                        throw BadSchemaException("Root '$root' is not required but has no default value")
                     }
                 } else {
                     try {
@@ -57,6 +57,17 @@ class SchemaVerification {
                 val rawType = rawDataType.split(" ").getOrNull(0)?.split("[")?.getOrNull(0) ?: throw BadSchemaException("Type '$rawDataType' not found for root '$root'")
                 println("Raw type: $rawType")
 
+                val obj = if (rawType == "map") {
+                    try {
+                        rootObject.getJSONObject("object")
+                    } catch (e: Exception) {
+                        null
+                    }
+                } else null
+
+                if(obj != null)
+                    return verifySchema(obj, types)
+
                 val dataType = types[rawType] ?: throw BadSchemaException("Type '$rawType' not found for root '$root'")
                 val type = dataType(rawDataType)
                 type.withTypes(types)
@@ -75,11 +86,7 @@ class SchemaVerification {
                         }
                     }
                     "array" -> {
-                        (type as app.lacabra.ragdrop.types.Array).let {
-                            println("Array of ${it.type}")
-                            println("Number min value ${(it.type as Number).minValue}")
-                            println("Number max value ${(it.type as Number).maxValue}")
-                        }
+                        println("Array of ${(type as app.lacabra.ragdrop.types.Array).type}")
                     }
                 }
 

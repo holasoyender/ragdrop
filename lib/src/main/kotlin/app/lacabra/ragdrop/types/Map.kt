@@ -27,9 +27,12 @@ class Map(
         if (verified) return valid
         verified = true
 
-        val rawData = _value.split(" ").getOrNull(1) ?: throw BadMapException("Invalid map requirements: you must provide a type (e.g. map number)") // number:string
-        val key = rawData.split(":").getOrNull(0) ?: throw BadMapException("Invalid map requirements: you must provide a key type (e.g. map number:string)") // number
-        val value = rawData.split(":").getOrNull(1) ?: throw BadMapException("Invalid map requirements: you must provide a value type (e.g. map number:string)") // string
+        val rawData = _value.split(" ").getOrNull(1) ?: throw BadMapException("Invalid map requirements: you must provide a type (e.g. map number:string)") // number:string
+        val rawDataKey = rawData.split(":").getOrNull(0) ?: throw BadMapException("Invalid map requirements: you must provide a key type (e.g. map number:string)") // number
+        val rawDataValue = rawData.split(":").getOrNull(1) ?: throw BadMapException("Invalid map requirements: you must provide a value type (e.g. map number:string)") // string
+
+        val key = rawDataKey.split("[").getOrNull(0) ?: throw BadMapException("Invalid map requirements: you must provide a key type (e.g. map number:string)") // number
+        val value = rawDataValue.split("[").getOrNull(0) ?: throw BadMapException("Invalid map requirements: you must provide a value type (e.g. map number:string)") // string
 
         val keyType = types[key] ?: throw BadMapException("Invalid map requirements: unknown key type '$key'")
         val valueType = types[value] ?: throw BadMapException("Invalid map requirements: unknown value type '$value'")

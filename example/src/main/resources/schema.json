@@ -12,7 +12,56 @@
     "type": "string[1..10]",
     "required": false,
     "default": "!"
+  },
+
+  "permissions": {
+    "aliases": ["permisos"],
+    "type": "map number[0..10]:string[1..100]",
+    "required": true
+  },
+
+  "moderation": {
+    "aliases": [
+      "mod",
+      "moderacion"
+    ],
+    "type": "map",
+    "required": true,
+    "description": "Configuración de la moderación del servidor. Más información en https://docs.lacabra.app/configuracion/modulos/moderacion",
+    "object": {
+      "mute_role_id": {
+        "aliases": [
+          "id_rol_mute",
+          "rol_mute",
+          "mute_role"
+        ],
+        "type": "string",
+        "required": false,
+        "default": null,
+        "description": "La ID del rol para los muteos"
+      },
+      "direct_message": {
+        "aliases": [
+          "mensaje_privado",
+          "mensaje_directo",
+          "mensaje_dm",
+          "dm"
+        ],
+        "type": "boolean",
+        "required": false,
+        "default": false,
+        "description": "Si se debe enviar un mensaje privado al usuario al ser sancionado"
+      },
+      "ignored_channels": {
+        "aliases": [
+          "ignorar_canales",
+          "canales_ignorados"
+        ],
+        "type": "array string[1..100]",
+        "required": false,
+        "default": [],
+        "description": "Lista de IDs de canales en los que el bot ignorará comandos (Los comandos del owner nunca son ignorados)"
+      }
+    }
   }
-
-
 }

@@ -9,5 +9,6 @@ object Constants {
         "number" to app.lacabra.ragdrop.types.Number::create,
         "boolean" to app.lacabra.ragdrop.types.Boolean::create,
         "array" to app.lacabra.ragdrop.types.Array::create,
+        "map" to app.lacabra.ragdrop.types.Map::create
     )
 }

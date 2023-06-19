@@ -9,9 +9,12 @@ import kotlin.String
 import kotlin.reflect.KFunction1
 
 class Map(
-    private val value: String,
+    private val _value: String,
     private var types: kotlin.collections.Map<String, KFunction1<String, Type>>,
     ): Type {
+
+        var key: Type? = null
+        var value: Type? = null
 
     private var verified = false
     private var valid = false
@@ -24,16 +27,39 @@ class Map(
         if (verified) return valid
         verified = true
 
-        val rawData = value.split(" ").getOrNull(1) ?: throw BadMapException("Invalid map requirements: you must provide a type (e.g. map number)") // number:string
+        val rawData = _value.split(" ").getOrNull(1) ?: throw BadMapException("Invalid map requirements: you must provide a type (e.g. map number)") // number:string
         val key = rawData.split(":").getOrNull(0) ?: throw BadMapException("Invalid map requirements: you must provide a key type (e.g. map number:string)") // number
         val value = rawData.split(":").getOrNull(1) ?: throw BadMapException("Invalid map requirements: you must provide a value type (e.g. map number:string)") // string
 
-        //...
+        val keyType = types[key] ?: throw BadMapException("Invalid map requirements: unknown key type '$key'")
+        val valueType = types[value] ?: throw BadMapException("Invalid map requirements: unknown value type '$value'")
+
+        val keyReq = try {
+            keyType(key)
+        } catch (e: Exception) {
+            throw BadMapException("Invalid map requirements: unknown key type '$key'")
+        }
+
+        val valueReq = try {
+            valueType(value)
+        } catch (e: Exception) {
+            throw BadMapException("Invalid map requirements: unknown value type '$value'")
+        }
+
+        if (!keyReq.verify())
+            throw BadMapException("Invalid map requirements: unknown key type '$key'")
+
+        if (!valueReq.verify())
+            throw BadMapException("Invalid map requirements: unknown value type '$value'")
+
+        this.key = keyReq
+        this.value = valueReq
+
         valid = true
         return true
     }
 
-    override fun validate(value: kotlin.String): Boolean {
+    override fun validate(value: String): Boolean {
         return true
     }
 
@@ -45,10 +71,10 @@ class Map(
         override val name = "map"
 
         private class BadMapException(
-            message: kotlin.String
+            message: String
         ): BadSchemaException(message)
 
-        override fun create(value: kotlin.String): Type = Map(value, Constants.defaultTypes)
+        override fun create(value: String): Type = Map(value, Constants.defaultTypes)
 
     }
 

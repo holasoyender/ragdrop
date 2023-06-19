@@ -59,6 +59,7 @@ class SchemaVerification {
 
                 val dataType = types[rawType] ?: throw BadSchemaException("Type '$rawType' not found for root '$root'")
                 val type = dataType(rawDataType)
+                type.withTypes(types)
 
                 when (rawType) {
                     "string" -> {

@@ -1,6 +1,9 @@
 # ragdrop
 Verify the integrity of your YAML files with a simple JSON scheme
 
+# ⚠️⚠️ NOT READY YET ⚠️⚠️
+```This is currently in heavy development and is not ready for production use.```
+
 #### Maven package
 
 Replace `x.y.z` with the latest version number: https://github.com/holasoyender/ragdrop/packages
@@ -148,7 +151,7 @@ class EmailType(
     companion object : TypeFactory {
 
         override val name = "email"
-        override fun create(value: kotlin.String): Type = EmailType(value)
+        override fun create(value: String): Type = EmailType(value)
 
     }
 }

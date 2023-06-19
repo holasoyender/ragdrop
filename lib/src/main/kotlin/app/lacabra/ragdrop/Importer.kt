@@ -91,6 +91,18 @@ class Importer(
     }
 
     /**
+     * Add types to the importer
+     * @param types The types to add
+     * @throws IllegalArgumentException If a type already exists
+     * @see addType
+     */
+    fun addTypes(types: Map<String, KFunction1<String, Type>>) {
+        types.forEach { (type, clazz) ->
+            addType(type, clazz)
+        }
+    }
+
+    /**
      * Add a type to the importer
      * @param type The type to add
      * @param clazz The class to add
@@ -119,7 +131,7 @@ class Importer(
     private fun verifyWithReason(): Pair<Boolean, String?> {
         this.verified = true
         return try {
-            val valid = SchemaVerification.verifySchema(json!!)
+            val valid = SchemaVerification.verifySchema(json!!, this.types)
 
             this.valid = valid
             this.errorMessage = null

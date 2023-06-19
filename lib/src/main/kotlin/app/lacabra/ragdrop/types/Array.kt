@@ -6,6 +6,7 @@ import app.lacabra.ragdrop.Type
 import app.lacabra.ragdrop.TypeFactory
 import kotlin.Boolean
 import kotlin.String
+import kotlin.collections.Map
 import kotlin.reflect.KFunction1
 
 class Array(

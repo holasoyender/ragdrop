@@ -94,11 +94,11 @@ import app.lacabra.ragdrop.Yaml
 
 fun main() {
 
-    val importer = Importer("path/to/verification/scheme.json") // Import the verification scheme
+    val schema = Importer("path/to/verification/scheme.json") // Import the verification scheme
     
-    if (importer.verify()) { // Verify the integrity of the scheme
+    if (schema.verify()) { // Verify the integrity of the scheme
         val yaml = Yaml("path/to/yaml/file.yaml") // Import the YAML file
-        if (yaml.verify(importer)) { // Verify the integrity of the YAML file compared to the scheme
+        if (yaml.verify(schema)) { // Verify the integrity of the YAML file compared to the scheme
             println("The YAML file is valid")
         } else {
             println("The YAML file is invalid")
@@ -165,13 +165,13 @@ import app.lacabra.ragdrop.Yaml
 
 fun main() {
 
-    val importer = Importer("path/to/verification/scheme.json") // Import the verification scheme
+    val schema = Importer("path/to/verification/scheme.json") // Import the verification scheme
     
-    importer.addType("email", EmailType::create) // Register the type 'email' in the importer
+    schema.addType("email", EmailType::create) // Register the type 'email' in the schema
     
-    if (importer.verify()) { // Verify the integrity of the scheme
+    if (schema.verify()) { // Verify the integrity of the scheme
         val yaml = Yaml("path/to/yaml/file.yaml") // Import the YAML file
-        if (yaml.verify(importer)) { // Verify the integrity of the YAML file compared to the scheme
+        if (yaml.verify(schema)) { // Verify the integrity of the YAML file compared to the scheme
             println("The YAML file is valid")
         } else {
             println("The YAML file is invalid")

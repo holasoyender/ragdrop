@@ -14,7 +14,7 @@ import kotlin.reflect.KFunction1
  * @throws IllegalArgumentException If the file is not found
  * @constructor Create a new Importer
  */
-class Importer(
+class Schema(
     path: String
 ) {
 
@@ -75,7 +75,6 @@ class Importer(
             throw BadSchemaException(errorMessage)*/
 
     }
-
 
     /**
      * Add a type to the importer

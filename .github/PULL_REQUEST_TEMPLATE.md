@@ -1,4 +1,4 @@
-[contributing]: https://github.com/holasoyender/ragdrop/blob/main/.github/contributing.md
+[contributing]: https://github.com/holasoyender/app.lacabra.ragdrop/blob/main/.github/contributing.md
 
 ## Pull Request Etiquette
 

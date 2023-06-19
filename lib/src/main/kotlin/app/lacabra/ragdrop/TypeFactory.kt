@@ -1,4 +1,4 @@
-package ragdrop
+package app.lacabra.ragdrop
 
 interface TypeFactory {
 

@@ -1,8 +1,8 @@
-package ragdrop.types
+package app.lacabra.ragdrop.types
 
-import ragdrop.Constants.requirementsRegex
-import ragdrop.Type
-import ragdrop.TypeFactory
+import app.lacabra.ragdrop.Constants.requirementsRegex
+import app.lacabra.ragdrop.Type
+import app.lacabra.ragdrop.TypeFactory
 import kotlin.Boolean
 import kotlin.String
 

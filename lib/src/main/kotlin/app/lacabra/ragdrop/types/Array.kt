@@ -1,9 +1,9 @@
-package ragdrop.types
+package app.lacabra.ragdrop.types
 
-import ragdrop.Constants
-import ragdrop.Importer
-import ragdrop.Type
-import ragdrop.TypeFactory
+import app.lacabra.ragdrop.Constants
+import app.lacabra.ragdrop.Importer
+import app.lacabra.ragdrop.Type
+import app.lacabra.ragdrop.TypeFactory
 import kotlin.Boolean
 import kotlin.String
 import kotlin.reflect.KFunction1

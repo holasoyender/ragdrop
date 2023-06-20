@@ -1,5 +1,6 @@
 package app.lacabra.ragdrop
 
+import app.lacabra.ragdrop.exceptions.BadSchemaException
 import kotlin.reflect.KFunction1
 
 interface Type {

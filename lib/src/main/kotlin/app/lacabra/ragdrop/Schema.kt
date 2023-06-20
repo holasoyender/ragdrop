@@ -1,5 +1,6 @@
 package app.lacabra.ragdrop
 
+import app.lacabra.ragdrop.exceptions.BadSchemaException
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.IOException
@@ -37,7 +38,7 @@ class Schema(
     var errorMessage: String? = null
     private var json: JSONObject? = null
 
-    val types = Constants.defaultTypes.toMutableMap()
+    private val types = Constants.defaultTypes.toMutableMap()
 
     init {
 
@@ -143,6 +144,14 @@ class Schema(
 
             Pair(false, e.message)
         }
+    }
+
+    fun validate(yaml: Yaml): Boolean {
+        return verify() && SchemaVerification.verifyYaml(yaml.parsed, json!!, this.types)
+    }
+
+    fun validate(yaml: Map<Any, Any>): Boolean {
+        return verify() && SchemaVerification.verifyYaml(yaml, json!!, this.types)
     }
 
     /**

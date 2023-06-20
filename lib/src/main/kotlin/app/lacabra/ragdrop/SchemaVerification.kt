@@ -1,5 +1,6 @@
 package app.lacabra.ragdrop
 
+import app.lacabra.ragdrop.exceptions.BadSchemaException
 import org.json.JSONObject
 import kotlin.reflect.KFunction1
 

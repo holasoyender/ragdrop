@@ -1,6 +1,6 @@
 package app.lacabra.ragdrop.types
 
-import app.lacabra.ragdrop.BadSchemaException
+import app.lacabra.ragdrop.exceptions.BadSchemaException
 import app.lacabra.ragdrop.Constants.requirementsRegex
 import app.lacabra.ragdrop.Type
 import app.lacabra.ragdrop.TypeFactory

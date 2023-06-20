@@ -1,9 +1,9 @@
 package app.lacabra.ragdrop.types
 
-import app.lacabra.ragdrop.BadSchemaException
 import app.lacabra.ragdrop.Constants
 import app.lacabra.ragdrop.Type
 import app.lacabra.ragdrop.TypeFactory
+import app.lacabra.ragdrop.exceptions.BadSchemaException
 import kotlin.Boolean
 import kotlin.String
 import kotlin.reflect.KFunction1

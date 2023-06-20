@@ -17,6 +17,7 @@ repositories {
 
 dependencies {
     api("org.json:json:20230227")
+    implementation("org.yaml:snakeyaml:2.0")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

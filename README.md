@@ -3,22 +3,35 @@ Verify the integrity of your YAML files with a simple JSON scheme
 
 #### Maven package
 
-Replace `x.y.z` with the latest version number: https://github.com/holasoyender/ragdrop/packages
+Replace `x.y.z` with the latest version number: https://github.com/holasoyender/ragdrop/releases
 
-* Repository: https://lacabra.app
-* Artifact: **app.lacabra:ragdrop:x.y.z**
+* Repository: https://jitpack.io
+* Artifact: **com.github.holasoyender:ragdrop:x.y.z**
 
 Using in Gradle:
 ```gradle
+repositories {
+  maven {
+    url 'https://jitpack.io'
+  }
+}
+
 dependencies {
-  implementation 'app.lacabra:ragdrop:x.y.z'
+  implementation 'com.github.holasoyender:ragdrop:x.y.z'
 }
 ```
 
 Using in Maven:
 ```xml
+<repositories>
+    <repository>
+        <id>jitpack</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+
 <dependency>
-  <groupId>app.lacabra</groupId>
+  <groupId>com.github.holasoyender</groupId>
   <artifactId>ragdrop</artifactId>
   <version>x.y.z</version>
 </dependency>

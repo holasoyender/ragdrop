@@ -158,7 +158,7 @@ public class EmailType implements Type {
 }
 ```
 
-Then, we need to register the type in the `Importer`:
+Then, we need to register the type in the `Schema`:
 
 ```java
 import app.lacabra.ragdrop.Schema;

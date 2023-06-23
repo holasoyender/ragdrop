@@ -49,6 +49,16 @@ class Array(
     }
 
     override fun validate(value: String): Boolean {
+
+        if (!verify()) return false
+
+        // value is a string of the form: [1, 2, 3, 4]
+        val values = value.drop(1).dropLast(1).split(",").map { it.trim() }
+        val type = type ?: throw BadArrayException("Invalid array requirements: unknown type")
+
+        for (v in values)
+            if (!type.validate(v)) throw BadArrayException("Invalid array requirements: invalid value '$v' for type")
+
         return true
     }
 

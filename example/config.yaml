@@ -2,5 +2,5 @@ permissions: "test1"
 moderation:
     mute_role_id: "tes2t"
 
-commands: "test3"
-prefix: "!!!!!"
+commands: ["1",    1,          2]
+prefix: "!!!"

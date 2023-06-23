@@ -96,6 +96,7 @@ class Schema(
      * @throws IllegalArgumentException If a type already exists
      * @see addType
      */
+    @Suppress("unused")
     fun addTypes(types: Map<String, KFunction1<String, Type>>) {
         types.forEach { (type, clazz) ->
             addType(type, clazz)

@@ -1,0 +1,7 @@
+permissions: "test"
+moderation:
+    commands: "test"
+    prefix: "!!!!"
+
+commands: "test"
+# prefix: "!!!!"

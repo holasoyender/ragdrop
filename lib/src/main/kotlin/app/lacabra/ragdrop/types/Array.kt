@@ -7,11 +7,10 @@ import app.lacabra.ragdrop.exceptions.BadArrayException
 import kotlin.Boolean
 import kotlin.String
 import kotlin.collections.Map
-import kotlin.reflect.KFunction1
 
 class Array(
     private val value: String,
-    private var types: Map<String, KFunction1<String, Type>>,
+    private var types: Map<String, Function1<String, Type>>,
 ): Type {
 
     var type: Type? = null
@@ -62,7 +61,7 @@ class Array(
         return true
     }
 
-    override fun withTypes(types: Map<String, KFunction1<String, Type>>) {
+    override fun withTypes(types: Map<String, Function1<String, Type>>) {
         this.types = types
     }
 

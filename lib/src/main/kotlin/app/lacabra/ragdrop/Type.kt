@@ -1,7 +1,6 @@
 package app.lacabra.ragdrop
 
 import app.lacabra.ragdrop.exceptions.BadSchemaException
-import kotlin.reflect.KFunction1
 
 interface Type {
 
@@ -10,6 +9,6 @@ interface Type {
 
     fun validate(value: String): Boolean
 
-    fun withTypes(types: Map<String, KFunction1<String, Type>>)
+    fun withTypes(types: Map<String, Function1<String, Type>>)
 
 }

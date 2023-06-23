@@ -6,7 +6,6 @@ import app.lacabra.ragdrop.exceptions.BadBooleanException
 import kotlin.Boolean
 import kotlin.String
 import kotlin.collections.Map
-import kotlin.reflect.KFunction1
 
 @Suppress("UNUSED_PARAMETER")
 class Boolean(
@@ -30,7 +29,7 @@ class Boolean(
         throw BadBooleanException("Invalid boolean value: '$value' should be true/false")
     }
 
-    override fun withTypes(types: Map<String, KFunction1<String, Type>>) = Unit
+    override fun withTypes(types: Map<String, Function1<String, Type>>) = Unit
 
 
     companion object : TypeFactory {

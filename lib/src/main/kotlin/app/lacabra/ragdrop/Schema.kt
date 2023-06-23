@@ -1,6 +1,7 @@
 package app.lacabra.ragdrop
 
 import app.lacabra.ragdrop.exceptions.BadSchemaException
+import app.lacabra.ragdrop.exceptions.BadYamlException
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.IOException
@@ -110,7 +111,10 @@ class Schema(
      * @throws IllegalArgumentException If the type already exists
      */
     fun addType(type: String, clazz: Function1<String, Type>) {
-        addType(type, clazz as KFunction1<String, Type>)
+        if (types.containsKey(type))
+            throw IllegalArgumentException("Type '$type' already exists")
+
+        types[type] = clazz
     }
 
     /**
@@ -147,10 +151,24 @@ class Schema(
         }
     }
 
+    /**
+     * Validate a YAML file
+     * @param yaml The YAML file to validate
+     * @return Whether the YAML file is valid
+     * @throws BadYamlException If the YAML file is invalid
+     */
+    @kotlin.jvm.Throws(BadYamlException::class)
     fun validate(yaml: Yaml): Boolean {
         return verify() && SchemaVerification.verifyYaml(yaml.parsed, json!!, this.types)
     }
 
+    /**
+     * Validate a YAML file
+     * @param yaml The YAML file to validate
+     * @return Whether the YAML file is valid
+     * @throws BadYamlException If the YAML file is invalid
+     */
+    @kotlin.jvm.Throws(BadYamlException::class)
     fun validate(yaml: Map<Any, Any>): Boolean {
         return verify() && SchemaVerification.verifyYaml(yaml, json!!, this.types)
     }

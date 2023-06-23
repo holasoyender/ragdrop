@@ -1,66 +1,44 @@
 {
-
-  "commands": {
-    "aliases": ["cmd", "comandos"],
-    "type": "array number[0..10]",
+  "name": {
+    "type": "string",
     "required": true,
-    "description": "Lista de los comandos junto a su nivel de autorización requerido. Más información en https://docs.lacabra.app/configuracion/modulos/comandos"
+    "description": "Name of the person"
   },
-
-  "prefix": {
-    "aliases": ["prefijo"],
-    "type": "string[1..3]",
+  "age": {
+    "type": "number[1..100]",
     "required": false,
-    "default": "!"
+    "default": 18,
+    "description": "Age of the person"
   },
-
-  "permissions": {
-    "aliases": ["permisos"],
-    "type": "map number[0..10]:string[1..100]",
-    "required": true
+  "email": {
+    "type": "email",
+    "required": true,
+    "description": "Email of the person"
   },
-
-  "moderation": {
-    "aliases": [
-      "mod",
-      "moderacion"
-    ],
+  "house": {
     "type": "map",
     "required": true,
-    "description": "Configuración de la moderación del servidor. Más información en https://docs.lacabra.app/configuracion/modulos/moderacion",
+    "description": "Information about the house of the person",
     "object": {
-      "mute_role_id": {
-        "aliases": [
-          "id_rol_mute",
-          "rol_mute",
-          "mute_role"
-        ],
+      "address": {
         "type": "string",
-        "required": false,
-        "default": null,
-        "description": "La ID del rol para los muteos"
+        "required": true,
+        "description": "Address of the house"
       },
-      "direct_message": {
-        "aliases": [
-          "mensaje_privado",
-          "mensaje_directo",
-          "mensaje_dm",
-          "dm"
-        ],
-        "type": "boolean",
-        "required": false,
-        "default": false,
-        "description": "Si se debe enviar un mensaje privado al usuario al ser sancionado"
+      "city": {
+        "type": "string[3..50]",
+        "required": true,
+        "description": "City of the house"
       },
-      "ignored_channels": {
-        "aliases": [
-          "ignorar_canales",
-          "canales_ignorados"
-        ],
-        "type": "array string[1..100]",
-        "required": false,
-        "default": [],
-        "description": "Lista de IDs de canales en los que el bot ignorará comandos (Los comandos del owner nunca son ignorados)"
+      "state": {
+        "type": "string[2..50]",
+        "required": true,
+        "description": "State of the house"
+      },
+      "zip": {
+        "type": "number[10000..99999]",
+        "required": true,
+        "description": "Zip code of the house"
       }
     }
   }

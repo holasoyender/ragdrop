@@ -1,9 +1,6 @@
 # ragdrop
 Verify the integrity of your YAML files with a simple JSON scheme
 
-# ⚠️⚠️ NOT READY YET ⚠️⚠️
-```This is currently in heavy development and is not ready for production use.```
-
 #### Maven package
 
 Replace `x.y.z` with the latest version number: https://github.com/holasoyender/ragdrop/packages
@@ -51,7 +48,7 @@ Our verification scheme will be a JSON file with the following content:
     "description": "Name of the person"
   },
   "age": {
-    "type": "number",
+    "type": "number[1..100]",
     "required": false,
     "default": 18,
     "description": "Age of the person"
@@ -67,17 +64,17 @@ Our verification scheme will be a JSON file with the following content:
         "description": "Address of the house"
       },
       "city": {
-        "type": "string",
+        "type": "string[3..50]",
         "required": true,
         "description": "City of the house"
       },
       "state": {
-        "type": "string",
+        "type": "string[2..50]",
         "required": true,
         "description": "State of the house"
       },
       "zip": {
-        "type": "number",
+        "type": "number[10000..99999]",
         "required": true,
         "description": "Zip code of the house"
       }
@@ -88,21 +85,28 @@ Our verification scheme will be a JSON file with the following content:
 
 Now we can verify the integrity of the YAML file with the following code:
 
-```kotlin
-import app.lacabra.ragdrop.Importer
-import app.lacabra.ragdrop.Yaml
+```java
+import app.lacabra.ragdrop.Schema;
+import app.lacabra.ragdrop.Yaml;
 
-fun main() {
+public class Main {
 
-    val schema = Importer("path/to/verification/scheme.json") // Import the verification scheme
-    
-    if (schema.verify()) { // Verify the integrity of the scheme
-        val yaml = Yaml("path/to/yaml/file.yaml") // Import the YAML file
-        if (yaml.verify(schema)) { // Verify the integrity of the YAML file compared to the scheme
-            println("The YAML file is valid")
+    public static void main(String[] args) {
+
+        Schema schema = new Schema("path/to/verification/scheme.json"); // Import the verification scheme
+        Yaml yaml = new Yaml().loadFromPath("path/to/yaml/file.yaml"); // Import the YAML file
+        
+        if (schema.verify()) { // Verify the integrity of the scheme
+            try {
+                schema.validate(yaml); // Verify the integrity of the YAML file compared to the scheme
+            } catch (Exception e) {
+                System.out.println("The YAML file is invalid: " + e.getMessage());
+            }
         } else {
-            println("The YAML file is invalid")
+            System.out.println("The verification scheme is invalid: " + schema.getErrorMessage());
         }
+
+
     }
 }
 ```
@@ -111,71 +115,76 @@ fun main() {
 ## Custom types
 ragdrop supports custom types. You can create your own types and use them in your verification schemes. For example, let's imagine we want to create a type called `email` that verifies that the value is a valid email address. We can do it like this:
 
-```kotlin
-/* FILE: EmailType.kt */
+```java
+/* FILE: EmailType.java */
+import app.lacabra.ragdrop.Type;
+import kotlin.jvm.functions.Function1;
+import org.jetbrains.annotations.NotNull;
 
-import app.lacabra.ragdrop.Type
-import app.lacabra.ragdrop.TypeFactory
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-class EmailType(
-    private val value: String
-): Type {
+public class EmailType implements Type {
 
-    private var verified = false
-    private var valid = false
-
-    init {
-        verify()
+    EmailType(String value) {
+        // This method is not used in this example
     }
 
-    override fun verify(): Boolean {
-
-        if (verified) return valid
-        verified = true
-
-        // Verify that type specified in the scheme is correct, for example if you want to add a requirement like
-        // 'email[<domain>]' you should verify that. You can see an example of this in the 'types/String.kt' file
-
-        valid = true
-        return true
+    @Override
+    public boolean verify() {
+        // This method is not used in this example
+        return true;
     }
 
-    override fun validate(value: String): Boolean {
-    
-        // Verify that the value in the YAML file is correct
-        // Here you should compare the input value with a regular expression or something like that
-        
-        return true
+    @Override
+    public boolean validate(@NotNull String value) {
+        // Here you should compare the value with an email pattern and return true if it matches
+        Pattern pattern = Pattern.compile("^(.+)@(.+)$");
+        Matcher matcher = pattern.matcher(value);
+        return matcher.matches();
     }
 
-    companion object : TypeFactory {
 
-        override val name = "email"
-        override fun create(value: String): Type = EmailType(value)
+    @NotNull
+    public static EmailType create(@NotNull String value) {
+        return new EmailType(value);
+    }
 
+    @Override
+    public void withTypes(@NotNull Map<String, ? extends Function1<? super String, ? extends Type>> types) {
+        // This method is not used in this example
     }
 }
 ```
 
 Then, we need to register the type in the `Importer`:
 
-```kotlin
-import app.lacabra.ragdrop.Importer
-import app.lacabra.ragdrop.Yaml
+```java
+import app.lacabra.ragdrop.Schema;
+import app.lacabra.ragdrop.Yaml;
+import app.lacabra.ragdrop.exceptions.BadYamlException;
 
-fun main() {
+public class Main {
 
-    val schema = Importer("path/to/verification/scheme.json") // Import the verification scheme
-    
-    schema.addType("email", EmailType::create) // Register the type 'email' in the schema
-    
-    if (schema.verify()) { // Verify the integrity of the scheme
-        val yaml = Yaml("path/to/yaml/file.yaml") // Import the YAML file
-        if (yaml.verify(schema)) { // Verify the integrity of the YAML file compared to the scheme
-            println("The YAML file is valid")
+    public static void main(String[] args) {
+
+        Schema schema = new Schema("path/to/verification/scheme.json"); // Import the verification scheme
+        Yaml yaml = new Yaml().loadFromPath("path/to/yaml/file.yaml"); // Import the YAML file
+        
+        schema.addType(EmailType::create); // Register the type
+
+        if (schema.verify()) { // Verify the integrity of the scheme
+            try {
+                schema.validate(yaml); // Verify the integrity of the YAML file compared to the scheme
+            } catch (Exception e) {
+                System.out.println("The YAML file is invalid: " + e.getMessage());
+            }
         } else {
-            println("The YAML file is invalid")
+            System.out.println("The verification scheme is invalid: " + schema.getErrorMessage());
         }
+
+
     }
 }
 ```

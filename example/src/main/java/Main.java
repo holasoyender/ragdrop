@@ -5,12 +5,22 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Schema schema = new Schema("classpath:schema.json");
-        Yaml yaml = new Yaml().loadFromPath("example/config.yaml");
+        Schema schema = new Schema("classpath:schema.json"); // Import the verification scheme
+        Yaml yaml = new Yaml().loadFromPath("example/person.yaml"); // Import the YAML file
 
-        System.out.println(schema.verify());
-        System.out.println(schema.getErrorMessage());
+        schema.addType("email", EmailType::create);
 
-        System.out.println(schema.validate(yaml));
+        if (schema.verify()) { // Verify the integrity of the scheme
+            try {
+                schema.validate(yaml); // Verify the integrity of the YAML file compared to the scheme
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("The YAML file is invalid: " + e.getMessage());
+            }
+        } else {
+            System.out.println("The verification scheme is invalid: " + schema.getErrorMessage());
+        }
+
+
     }
 }

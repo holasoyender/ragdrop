@@ -3,7 +3,6 @@ package app.lacabra.ragdrop
 import app.lacabra.ragdrop.exceptions.BadSchemaException
 import app.lacabra.ragdrop.exceptions.BadYamlException
 import org.json.JSONObject
-import kotlin.reflect.KFunction1
 
 class SchemaVerification {
 
@@ -15,7 +14,7 @@ class SchemaVerification {
          * @return Whether the schema is valid
          * @throws BadSchemaException If the schema is invalid
          */
-        fun verifySchema(schema: JSONObject, types: Map<String, KFunction1<String, Type>>): Boolean {
+        fun verifySchema(schema: JSONObject, types: Map<String, Function1<String, Type>>): Boolean {
 
             val roots = schema.keys()
             for (root in roots) {
@@ -91,7 +90,7 @@ class SchemaVerification {
         fun verifyYaml(
             yaml: Map<Any, Any>,
             json: JSONObject,
-            types: Map<String, KFunction1<String, Type>>,
+            types: Map<String, Function1<String, Type>>,
             rootName: String = "default"
         ): Boolean {
 
@@ -108,7 +107,11 @@ class SchemaVerification {
             val requiredRoots: List<Pair<String, List<String>>> =
                 jsonRoots.filter { json.getJSONObject(it).getBoolean("required") }.toList().let { mp ->
                     mp.map { root ->
-                        val aliases = json.getJSONObject(root).getJSONArray("aliases").toList().map { it.toString() }
+                        val aliases = try {
+                            json.getJSONObject(root).getJSONArray("aliases").toList()
+                        } catch (e: Exception) {
+                            listOf()
+                        }.map { it.toString() }
                         Pair(root, aliases)
                     }
                 }
@@ -127,11 +130,7 @@ class SchemaVerification {
              * Compare the types of the roots in the YAML to the types in the JSON schema
              */
 
-            println(yamlRoots.joinToString(", "))
-
             for (yamlRoot in yamlRoots) {
-
-                println("Verifying root '$yamlRoot' ${if (rootName == "default") "" else "in root '$rootName'"}")
 
                 // yamlRoot is the root name to check
                 // yaml[yamlRoot] is the value of the root
@@ -145,8 +144,11 @@ class SchemaVerification {
                     // The root is not in the JSON schema, so we need to check if it's an alias
 
                     val obj = jsonRoots.firstOrNull { rt ->
-                        println(rt)
-                        json.getJSONObject(rt).getJSONArray("aliases").toList().map { it.toString().lowercase() }
+                        try {
+                            json.getJSONObject(rt).getJSONArray("aliases").toList()
+                        } catch (e: Exception) {
+                            listOf()
+                        }.map { it.toString().lowercase() }
                             .contains(yamlRoot.toString().lowercase()) || rt.lowercase() == yamlRoot.toString()
                             .lowercase()
                     }
@@ -199,7 +201,11 @@ class SchemaVerification {
 
                     val validate =
                         try {
-                            type.validate(yaml[yamlRoot].toString())
+                            if (yaml[yamlRoot] is Map<*, *>) {
+                                val t = yaml[yamlRoot] as Map<Any, Any>
+                                (type as app.lacabra.ragdrop.types.Map).validate(t)
+                            } else
+                                type.validate(yaml[yamlRoot].toString())
                         } catch (e: BadYamlException) {
                             throw BadYamlException("Value '${yaml[yamlRoot]}' is invalid for root '$yamlRoot': ${e.message} ${if (rootName == "default") "" else "in root '$rootName'"}")
                         }

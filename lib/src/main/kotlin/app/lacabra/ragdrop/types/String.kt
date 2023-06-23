@@ -6,7 +6,6 @@ import app.lacabra.ragdrop.TypeFactory
 import app.lacabra.ragdrop.exceptions.BadStringException
 import kotlin.Boolean
 import kotlin.collections.Map
-import kotlin.reflect.KFunction1
 
 class String(
     private val value: kotlin.String
@@ -61,7 +60,7 @@ class String(
         return true
     }
 
-    override fun withTypes(types: Map<kotlin.String, KFunction1<kotlin.String, Type>>) = Unit
+    override fun withTypes(types: Map<kotlin.String, Function1<kotlin.String, Type>>) = Unit
 
 
     companion object : TypeFactory {

@@ -7,13 +7,12 @@ import app.lacabra.ragdrop.exceptions.BadNumberException
 import kotlin.Boolean
 import kotlin.String
 import kotlin.collections.Map
-import kotlin.reflect.KFunction1
 
 class Number(
     private val value: String
 ): Type {
 
-    private var maxValue = Int.MAX_VALUE
+    private var maxValue = Long.MAX_VALUE
     private var minValue = Int.MIN_VALUE
 
     private var verified = false
@@ -33,13 +32,13 @@ class Number(
         if (requirements != null) {
             val range = requirements.split("..")
             if (range.size != 2)
-                throw BadNumberException("Invalid int requirements: you must provide a range of length (e.g. number[1..10])")
+                throw BadNumberException("Invalid number requirements: you must provide a range of length (e.g. number[1..10])")
 
             try {
                 minValue = range[0].toInt()
-                maxValue = range[1].toInt()
+                maxValue = range[1].toLong()
             } catch (e: Exception) {
-                throw BadNumberException("Invalid int requirements: you must provide a range of length (e.g. number[1..10])")
+                throw BadNumberException("Invalid number requirements: you must provide a range of length (e.g. number[1..10])")
             }
         }
 
@@ -51,16 +50,16 @@ class Number(
 
         if (!verify()) return false
 
-        val number = try { value.toInt() } catch (e: Exception) { null }
-        if (number == null) throw BadNumberException("Invalid int: '$value' is not a valid number")
+        val number = try { value.toLong() } catch (e: Exception) { null }
+            ?: throw BadNumberException("Invalid number: '$value' is not a valid number")
 
-        if (number < minValue) throw BadNumberException("Invalid int: '$value' is too small, minimum value is $minValue")
-        if (number > maxValue) throw BadNumberException("Invalid int: '$value' is too big, maximum value is $maxValue")
+        if (number < minValue) throw BadNumberException("Invalid number: '$value' is too small, minimum value is $minValue")
+        if (number > maxValue) throw BadNumberException("Invalid number: '$value' is too big, maximum value is $maxValue")
 
         return true
     }
 
-    override fun withTypes(types: Map<String, KFunction1<String, Type>>) = Unit
+    override fun withTypes(types: Map<String, Function1<String, Type>>) = Unit
 
 
     companion object: TypeFactory {

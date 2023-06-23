@@ -8,7 +8,7 @@ plugins {
 
 group = "app.lacabra"
 description = "YAML verification with JSON schemas"
-version = "0.1-dev"
+version = "0.0.1"
 
 repositories {
     // Use Maven Central for resolving dependencies.

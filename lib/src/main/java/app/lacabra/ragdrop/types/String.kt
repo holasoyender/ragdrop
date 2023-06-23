@@ -1,9 +1,9 @@
 package app.lacabra.ragdrop.types
 
-import app.lacabra.ragdrop.exceptions.BadSchemaException
 import app.lacabra.ragdrop.Constants.requirementsRegex
 import app.lacabra.ragdrop.Type
 import app.lacabra.ragdrop.TypeFactory
+import app.lacabra.ragdrop.exceptions.BadStringException
 import kotlin.Boolean
 import kotlin.collections.Map
 import kotlin.reflect.KFunction1
@@ -12,8 +12,8 @@ class String(
     private val value: kotlin.String
 ): Type {
 
-    var maxLength: Int = Int.MAX_VALUE
-    var minLength: Int = 0
+    private var maxLength: Int = Int.MAX_VALUE
+    private var minLength: Int = 0
 
     private var verified = false
     private var valid = false
@@ -52,6 +52,12 @@ class String(
     }
 
     override fun validate(value: kotlin.String): Boolean {
+
+        if (!verify()) return false
+
+        if (value.length < minLength) throw BadStringException("Invalid string: '$value' is too short, minimum length is $minLength")
+        if (value.length > maxLength) throw BadStringException("Invalid string: '$value' is too long, maximum length is $maxLength")
+
         return true
     }
 
@@ -62,9 +68,6 @@ class String(
 
         override val name = "string"
 
-        private class BadStringException(
-            message: kotlin.String
-        ): BadSchemaException(message)
 
         override fun create(value: kotlin.String): Type = String(value)
 

@@ -1,7 +1,7 @@
 package app.lacabra.ragdrop
 
-import app.lacabra.ragdrop.exceptions.BadYamlException
 import app.lacabra.ragdrop.exceptions.BadSchemaException
+import app.lacabra.ragdrop.exceptions.BadYamlException
 import app.lacabra.ragdrop.exceptions.InvalidYamlValueException
 import org.yaml.snakeyaml.Yaml
 

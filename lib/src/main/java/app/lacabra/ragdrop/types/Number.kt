@@ -3,6 +3,7 @@ package app.lacabra.ragdrop.types
 import app.lacabra.ragdrop.Constants.requirementsRegex
 import app.lacabra.ragdrop.Type
 import app.lacabra.ragdrop.TypeFactory
+import app.lacabra.ragdrop.exceptions.BadNumberException
 import kotlin.Boolean
 import kotlin.String
 import kotlin.collections.Map
@@ -12,8 +13,8 @@ class Number(
     private val value: String
 ): Type {
 
-    var maxValue = Int.MAX_VALUE
-    var minValue = Int.MIN_VALUE
+    private var maxValue = Int.MAX_VALUE
+    private var minValue = Int.MIN_VALUE
 
     private var verified = false
     private var valid = false
@@ -32,13 +33,13 @@ class Number(
         if (requirements != null) {
             val range = requirements.split("..")
             if (range.size != 2)
-                throw BadIntException("Invalid int requirements: you must provide a range of length (e.g. number[1..10])")
+                throw BadNumberException("Invalid int requirements: you must provide a range of length (e.g. number[1..10])")
 
             try {
                 minValue = range[0].toInt()
                 maxValue = range[1].toInt()
             } catch (e: Exception) {
-                throw BadIntException("Invalid int requirements: you must provide a range of length (e.g. number[1..10])")
+                throw BadNumberException("Invalid int requirements: you must provide a range of length (e.g. number[1..10])")
             }
         }
 
@@ -47,6 +48,15 @@ class Number(
     }
 
     override fun validate(value: String): Boolean {
+
+        if (!verify()) return false
+
+        val number = try { value.toInt() } catch (e: Exception) { null }
+        if (number == null) throw BadNumberException("Invalid int: '$value' is not a valid number")
+
+        if (number < minValue) throw BadNumberException("Invalid int: '$value' is too small, minimum value is $minValue")
+        if (number > maxValue) throw BadNumberException("Invalid int: '$value' is too big, maximum value is $maxValue")
+
         return true
     }
 
@@ -56,9 +66,6 @@ class Number(
     companion object: TypeFactory {
         override val name = "number"
 
-        private class BadIntException(
-            message: String
-        ): Exception(message)
 
         override fun create(value: String): Type = Number(value)
     }

@@ -1,7 +1,6 @@
-permissions: "test"
+permissions: "test1"
 moderation:
-    commands: "test"
-    prefix: "!!!!"
+    mute_role_id: "tes2t"
 
-commands: "test"
-# prefix: "!!!!"
+commands: "test3"
+prefix: "!!!!!"

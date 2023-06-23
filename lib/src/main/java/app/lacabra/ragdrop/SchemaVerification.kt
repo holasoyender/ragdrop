@@ -127,7 +127,11 @@ class SchemaVerification {
              * Compare the types of the roots in the YAML to the types in the JSON schema
              */
 
+            println(yamlRoots.joinToString(", "))
+
             for (yamlRoot in yamlRoots) {
+
+                println("Verifying root '$yamlRoot' ${if (rootName == "default") "" else "in root '$rootName'"}")
 
                 // yamlRoot is the root name to check
                 // yaml[yamlRoot] is the value of the root
@@ -164,9 +168,7 @@ class SchemaVerification {
                 val rawType = rawDataType.split(" ").getOrNull(0)?.split("[")?.getOrNull(0) ?: throw BadSchemaException(
                     "Type '$rawDataType' not found for root '$yamlRoot' ${if (rootName == "default") "" else "in root '$rootName'"}"
                 )
-                val dataType =
-                    types[rawType]
-                        ?: throw BadSchemaException("Type '$rawType' not found for root '$yamlRoot' ${if (rootName == "default") "" else "in root '$rootName'"}")
+                val dataType = types[rawType] ?: throw BadSchemaException("Type '$rawDataType' not found for root '$yamlRoot' ${if (rootName == "default") "" else "in root '$rootName'"}")
 
                 val obj = if (rawType == "map") {
                     try {
@@ -184,27 +186,28 @@ class SchemaVerification {
                         throw BadYamlException("Value '${yaml[yamlRoot]}' is invalid for root '$yamlRoot': ${e.message} ${if (rootName == "default") "" else "in root '$rootName'"}")
                     }
 
-                    return verifyYaml(t, obj, types, yamlRoot.toString())
+                    verifyYaml(t, obj, types, yamlRoot.toString())
+                } else {
+
+                    /** -----------------
+                     *  PHASE 2.3:
+                     *  Check if the value is valid for the type
+                     */
+
+                    val type = dataType(rawDataType)
+                    type.withTypes(types)
+
+                    val validate =
+                        try {
+                            type.validate(yaml[yamlRoot].toString())
+                        } catch (e: BadYamlException) {
+                            throw BadYamlException("Value '${yaml[yamlRoot]}' is invalid for root '$yamlRoot': ${e.message} ${if (rootName == "default") "" else "in root '$rootName'"}")
+                        }
+
+                    if (!validate)
+                        throw BadYamlException("Value '${yaml[yamlRoot]}' is invalid for root '$yamlRoot', expected type '$rawType' ${if (rootName == "default") "" else "in root '$rootName'"}")
+
                 }
-
-                val type = dataType(rawDataType)
-                type.withTypes(types)
-
-                /** -----------------
-                 *  PHASE 2.3:
-                 *  Check if the value is valid for the type
-                 */
-
-                val validate =
-                    try {
-                        type.validate(yaml[yamlRoot].toString())
-                    } catch (e: BadYamlException) {
-                        throw BadYamlException("Value '${yaml[yamlRoot]}' is invalid for root '$yamlRoot': ${e.message} ${if (rootName == "default") "" else "in root '$rootName'"}")
-                    }
-
-                if (!validate)
-                    throw BadYamlException("Value '${yaml[yamlRoot]}' is invalid for root '$yamlRoot', expected type '$rawType' ${if (rootName == "default") "" else "in root '$rootName'"}")
-
             }
 
             return true

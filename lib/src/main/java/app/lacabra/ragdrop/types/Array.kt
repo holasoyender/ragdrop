@@ -3,6 +3,7 @@ package app.lacabra.ragdrop.types
 import app.lacabra.ragdrop.Constants
 import app.lacabra.ragdrop.Type
 import app.lacabra.ragdrop.TypeFactory
+import app.lacabra.ragdrop.exceptions.BadArrayException
 import kotlin.Boolean
 import kotlin.String
 import kotlin.collections.Map
@@ -57,10 +58,6 @@ class Array(
 
     companion object: TypeFactory {
         override val name = "array"
-
-        private class BadArrayException(
-            message: String
-        ): Exception(message)
 
         override fun create(value: String): Type = Array(value, Constants.defaultTypes)
 

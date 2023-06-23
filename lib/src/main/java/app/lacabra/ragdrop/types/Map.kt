@@ -3,7 +3,7 @@ package app.lacabra.ragdrop.types
 import app.lacabra.ragdrop.Constants
 import app.lacabra.ragdrop.Type
 import app.lacabra.ragdrop.TypeFactory
-import app.lacabra.ragdrop.exceptions.BadSchemaException
+import app.lacabra.ragdrop.exceptions.BadMapException
 import kotlin.Boolean
 import kotlin.String
 import kotlin.reflect.KFunction1
@@ -72,10 +72,6 @@ class Map(
 
     companion object : TypeFactory {
         override val name = "map"
-
-        private class BadMapException(
-            message: String
-        ): BadSchemaException(message)
 
         override fun create(value: String): Type = Map(value, Constants.defaultTypes)
 

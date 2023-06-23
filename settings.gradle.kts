@@ -7,4 +7,4 @@ rootProject.name = "ragdrop"
 
 include(":ragdrop")
 project(":ragdrop").projectDir = file("$rootDir/lib")
-include("example")
+//include("example")

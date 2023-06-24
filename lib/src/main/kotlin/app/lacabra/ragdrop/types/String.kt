@@ -2,7 +2,6 @@ package app.lacabra.ragdrop.types
 
 import app.lacabra.ragdrop.Constants.requirementsRegex
 import app.lacabra.ragdrop.Type
-import app.lacabra.ragdrop.TypeFactory
 import app.lacabra.ragdrop.exceptions.BadStringException
 import kotlin.Boolean
 import kotlin.collections.Map
@@ -62,13 +61,4 @@ class String(
 
     override fun withTypes(types: Map<kotlin.String, Function1<kotlin.String, Type>>) = Unit
 
-
-    companion object : TypeFactory {
-
-        override val name = "string"
-
-
-        override fun create(value: kotlin.String): Type = String(value)
-
-    }
 }

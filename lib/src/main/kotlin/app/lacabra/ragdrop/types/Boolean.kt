@@ -1,7 +1,6 @@
 package app.lacabra.ragdrop.types
 
 import app.lacabra.ragdrop.Type
-import app.lacabra.ragdrop.TypeFactory
 import app.lacabra.ragdrop.exceptions.BadBooleanException
 import kotlin.Boolean
 import kotlin.String
@@ -31,10 +30,4 @@ class Boolean(
 
     override fun withTypes(types: Map<String, Function1<String, Type>>) = Unit
 
-
-    companion object : TypeFactory {
-        override val name = "boolean"
-
-        override fun create(value: String): Type = Boolean(value)
-    }
 }

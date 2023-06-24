@@ -25,13 +25,7 @@ public class EmailType implements Type {
         Matcher matcher = pattern.matcher(value);
         return matcher.matches();
     }
-
-
-    @NotNull
-    public static EmailType create(@NotNull String value) {
-        return new EmailType(value);
-    }
-
+    
     @Override
     public void withTypes(@NotNull Map<String, ? extends Function1<? super String, ? extends Type>> types) {
         // This method is not used in this example

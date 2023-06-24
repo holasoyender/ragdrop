@@ -8,7 +8,7 @@ public class Main {
         Schema schema = new Schema("classpath:schema.json"); // Import the verification scheme
         Yaml yaml = new Yaml().loadFromPath("example/person.yaml"); // Import the YAML file
 
-        schema.addType("email", EmailType::create);
+        schema.addType("email", EmailType::new); // Add a new type to the scheme
 
         if (schema.verify()) { // Verify the integrity of the scheme
             try {

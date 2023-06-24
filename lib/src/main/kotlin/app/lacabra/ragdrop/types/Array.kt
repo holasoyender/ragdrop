@@ -2,7 +2,6 @@ package app.lacabra.ragdrop.types
 
 import app.lacabra.ragdrop.Constants
 import app.lacabra.ragdrop.Type
-import app.lacabra.ragdrop.TypeFactory
 import app.lacabra.ragdrop.exceptions.BadArrayException
 import kotlin.Boolean
 import kotlin.String
@@ -17,6 +16,8 @@ class Array(
 
     private var verified = false
     private var valid = false
+
+    constructor(value: String): this(value, Constants.defaultTypes)
 
     init {
         verify()
@@ -63,13 +64,6 @@ class Array(
 
     override fun withTypes(types: Map<String, Function1<String, Type>>) {
         this.types = types
-    }
-
-    companion object: TypeFactory {
-        override val name = "array"
-
-        override fun create(value: String): Type = Array(value, Constants.defaultTypes)
-
     }
 
 }

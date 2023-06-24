@@ -2,7 +2,6 @@ package app.lacabra.ragdrop.types
 
 import app.lacabra.ragdrop.Constants.requirementsRegex
 import app.lacabra.ragdrop.Type
-import app.lacabra.ragdrop.TypeFactory
 import app.lacabra.ragdrop.exceptions.BadNumberException
 import kotlin.Boolean
 import kotlin.String
@@ -61,11 +60,4 @@ class Number(
 
     override fun withTypes(types: Map<String, Function1<String, Type>>) = Unit
 
-
-    companion object: TypeFactory {
-        override val name = "number"
-
-
-        override fun create(value: String): Type = Number(value)
-    }
 }

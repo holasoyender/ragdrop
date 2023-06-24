@@ -7,7 +7,6 @@ import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
-import kotlin.reflect.KFunction1
 
 /**
  * Import a JSON template from the given path
@@ -84,7 +83,8 @@ class Schema(
      * @param clazz The class to add
      * @throws IllegalArgumentException If the type already exists
      */
-    fun addType(type: String, clazz: KFunction1<String, Type>) {
+    @kotlin.jvm.Throws(IllegalArgumentException::class)
+    fun addType(type: String, clazz: (String) -> Type) {
         if (types.containsKey(type))
             throw IllegalArgumentException("Type '$type' already exists")
 
@@ -92,29 +92,16 @@ class Schema(
     }
 
     /**
-     * Add types to the importer
+     * Add multiple types to the importer
      * @param types The types to add
-     * @throws IllegalArgumentException If a type already exists
+     * @throws IllegalArgumentException If any of the types already exists
      * @see addType
      */
-    @Suppress("unused")
-    fun addTypes(types: Map<String, KFunction1<String, Type>>) {
+    @kotlin.jvm.Throws(IllegalArgumentException::class)
+    fun addTypes(types: Map<String, (String) -> Type>) {
         types.forEach { (type, clazz) ->
             addType(type, clazz)
         }
-    }
-
-    /**
-     * Add a type to the importer
-     * @param type The type to add
-     * @param clazz The class to add
-     * @throws IllegalArgumentException If the type already exists
-     */
-    fun addType(type: String, clazz: Function1<String, Type>) {
-        if (types.containsKey(type))
-            throw IllegalArgumentException("Type '$type' already exists")
-
-        types[type] = clazz
     }
 
     /**

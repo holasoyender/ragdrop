@@ -158,12 +158,6 @@ public class EmailType implements Type {
         return matcher.matches();
     }
 
-
-    @NotNull
-    public static EmailType create(@NotNull String value) {
-        return new EmailType(value);
-    }
-
     @Override
     public void withTypes(@NotNull Map<String, ? extends Function1<? super String, ? extends Type>> types) {
         // This method is not used in this example
@@ -185,7 +179,7 @@ public class Main {
         Schema schema = new Schema("path/to/verification/scheme.json"); // Import the verification scheme
         Yaml yaml = new Yaml().loadFromPath("path/to/yaml/file.yaml"); // Import the YAML file
         
-        schema.addType(EmailType::create); // Register the type
+        schema.addType("email", EmailType::new); // Register the type
 
         if (schema.verify()) { // Verify the integrity of the scheme
             try {

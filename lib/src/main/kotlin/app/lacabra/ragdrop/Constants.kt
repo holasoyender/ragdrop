@@ -11,10 +11,10 @@ object Constants {
     val requirementsRegex = Regex("\\[(.*?)]")
 
     val defaultTypes: kotlin.collections.Map<kotlin.String, Function1<kotlin.String, Type>> = mapOf(
-        "string" to String::create,
-        "number" to Number::create,
-        "boolean" to Boolean::create,
-        "array" to Array::create,
-        "map" to Map::create
+        "string" to { String(it) },
+        "number" to { Number(it) },
+        "boolean" to { Boolean(it) },
+        "array" to { Array(it) },
+        "map" to { Map(it) }
     )
 }

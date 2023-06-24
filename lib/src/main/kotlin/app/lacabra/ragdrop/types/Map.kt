@@ -1,8 +1,6 @@
 package app.lacabra.ragdrop.types
 
-import app.lacabra.ragdrop.Constants
 import app.lacabra.ragdrop.Type
-import app.lacabra.ragdrop.TypeFactory
 import app.lacabra.ragdrop.exceptions.BadMapException
 import kotlin.Boolean
 import kotlin.String
@@ -21,6 +19,8 @@ class Map(
     init {
         verify()
     }
+
+    constructor(value: String): this(value, app.lacabra.ragdrop.Constants.defaultTypes)
 
     override fun verify(): Boolean {
         if (verified) return valid
@@ -87,13 +87,6 @@ class Map(
 
     override fun withTypes(types: kotlin.collections.Map<String, Function1<String, Type>>) {
         this.types = types
-    }
-
-    companion object : TypeFactory {
-        override val name = "map"
-
-        override fun create(value: String): Type = Map(value, Constants.defaultTypes)
-
     }
 
 }
